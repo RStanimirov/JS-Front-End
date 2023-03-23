@@ -1,0 +1,15 @@
+[
+    {
+        "img":"https://ikeabg.azureedge.net/images/370x370/1/variantimages/79389465/0.JPG",
+        "name": "Sofa",
+        "price": "259",
+        "decFactor":"0.4"
+
+    },
+    {
+        "img":"https://www.stylespafurniture.com/wp-content/uploads/2020/03/Cove_3_Door_Wardrobe_1.jpg",
+        "name": "Wardrobe",
+        "price": "120",
+        "decFactor":"1.2"
+    }
+]
