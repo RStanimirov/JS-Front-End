@@ -29,7 +29,11 @@ function solve() {
     function onCreate(event) {
         event.preventDefault();
 
-        if (titleInput === '' | descriptionInput === '' || labelInput === '' || pointsInput === '' || assigneeInput === '') {
+        if (titleInput.value === '' 
+            || descriptionInput.value === '' 
+            || labelInput.value === '' 
+            || pointsInput.value === '' 
+            || assigneeInput.value === '') {
             return;
         }
 
@@ -43,7 +47,7 @@ function solve() {
         let assignee = assigneeInput.value;
 
         entriesCollection[taskId] = {title, description, label, points, assignee};
-        console.log(entriesCollection)
+        // console.log(entriesCollection)
         totalPoints += points;
 
         totalPointsSection.textContent = `Total Points ${totalPoints}pts`
@@ -102,7 +106,6 @@ function solve() {
 
         tasksSection.appendChild(article);
         
-
         form.reset();
 
         counter ++;
