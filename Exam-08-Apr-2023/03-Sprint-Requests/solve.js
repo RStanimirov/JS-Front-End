@@ -1,12 +1,14 @@
-// RS 83/100:
-function attachEvents() {
+// RS 100/100 after removing the commands clearing the inputs outside of fetch (line 127), else 83/100:
 
+function attachEvents() {
     const BASE_URL = 'http://localhost:3030/jsonstore/tasks/';
 
     let form = document.querySelector('#form-section > form');
-    let loadBtn = document.getElementById('load-board-btn');
+
     let titleInput = document.getElementById('title');
     let descriptionInput = document.getElementById('description');
+
+    let loadBtn = document.getElementById('load-board-btn');
     let createBtn = document.getElementById('create-task-btn');
 
     let todoContainer = document.getElementById('todo-section');
@@ -86,8 +88,6 @@ function attachEvents() {
                         button.addEventListener('click', onClose);
                     }
                 }
-                titleInput.value = '';
-                descriptionInput.value = '';
             })
             .catch((err) => {
                 console.error(err);
@@ -98,17 +98,17 @@ function attachEvents() {
     // -------------------------CREATE(POST request)----------------------------
     function onCreate(event) {
         event.preventDefault();
-        let title = titleInput.value;
-        let description = descriptionInput.value;
+        let title = titleInput.value.trim();
+        let description = descriptionInput.value.trim();
         let status = 'ToDo';
         let headers = {
             method: 'POST',
             body: JSON.stringify({ title, description, status })
         }
 
-        if (title === '' || description === '' || status === '' ) {
+        if (title === '' || description === '') {
             return;
-        } 
+        }
 
         fetch(BASE_URL, headers)
             .then((response) => {
@@ -118,13 +118,16 @@ function attachEvents() {
             .then((response) => response.json())
             .then((data) => {
                 onLoad();
-                // form.reset();
-                
+
             })
             .catch((err) => {
                 console.error(err);
-            })
+            });
+
+        titleInput.value = '';
+        descriptionInput.value = '';
     }
+
 
     // -------------------------MOVE(PATCH request)----------------------------
     function onMove(event) {
@@ -136,21 +139,13 @@ function attachEvents() {
 
         if (this.innerText === 'Move to Done') {
             newStatus = 'Done';
-        } 
+        }
         else if (this.innerText === 'Move to Code Review') {
             newStatus = 'Code Review';
-        } 
+        }
         else if (this.innerText === 'Move to In Progress') {
             newStatus = 'In Progress';
         }
-        else if (this.innerText === 'Close') {
-            let headers = {
-                method: 'DELETE'
-            };
-            fetch(BASE_URL + currentId, headers)
-                .then(() => onLoad())
-                .catch((err) => console.error(err))
-        } 
 
         let headers = {
             method: 'PATCH',
@@ -158,7 +153,7 @@ function attachEvents() {
                 "status": newStatus
             })
         }
-        
+
         fetch(BASE_URL + currentId, headers)
             .then(() => {
                 onLoad();
@@ -180,6 +175,7 @@ function attachEvents() {
             })
             .catch((err) => console.error(err))
     }
+
 }
 
 attachEvents()
